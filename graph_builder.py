@@ -24,7 +24,7 @@ class State(TypedDict):
 
 # === tool to get youtube transcribe === #
 def transcribe_yt(url):
-    """ Use this tool for extracting youtube video transcribe """
+    """ Use this tool only for extracting youtube video transcribe """
 
     # Parse the URL to extract its components
     parsed_url = urlparse(url)

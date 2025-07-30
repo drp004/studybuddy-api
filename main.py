@@ -61,7 +61,7 @@ system_prompt = """
         Concise explanations
 
     Additional Guidelines:
-        You don't need to call any tool for this to extract the text from PDF or Image
+        You don't need to call any tool for this to extract the text from PDF or Image it will be handlede explicitly
 """
 
 class ChatHistoryItem(BaseModel):
