@@ -1,0 +1,32 @@
+langgraph
+langchain
+langsmith
+python-dotenv
+langchain_groq 
+langchain_tavily
+
+# FastAPI
+fastapi[standard]
+uvicorn[standard]
+
+# LangChain & Groq
+langchain
+langchain-groq
+tiktoken
+
+# PDF
+PyMuPDF
+
+# Image OCR
+opencv-python
+pytesseract
+numpy
+
+# YouTube transcripts
+youtube-transcript-api
+
+# Audio (Whisper)
+faster-whisper
+
+# environment variables (optional, but recommended)
+python-dotenv
