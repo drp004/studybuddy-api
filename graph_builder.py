@@ -24,7 +24,7 @@ class State(TypedDict):
 
 # === tool to get youtube transcribe === #
 def transcribe_yt(url):
-    """ Use this tool only for extracting youtube video transcribe """
+    """ Use this tool only for getting youtube video transcribe """
 
     # Parse the URL to extract its components
     parsed_url = urlparse(url)
@@ -55,7 +55,7 @@ def transcribe_yt(url):
 tools = [transcribe_yt]
 
 # initialize llm instance for chatbot
-llm = ChatGroq(model="gemma2-9b-it")
+llm = ChatGroq(model="llama-3.3-70b-versatile")
 
 # bind llm with tool
 llm_with_tool = llm.bind_tools(tools)
