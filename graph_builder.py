@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from typing import TypedDict, Annotated
-from langgraph.graph import StateGraph, START
+from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage
@@ -77,6 +77,7 @@ graph_builder.add_node("tools", ToolNode(tools))
 # Add edges
 graph_builder.add_edge(START, "chatbot")
 graph_builder.add_conditional_edges("chatbot", tools_condition)
+graph_builder.add_edge("chatbot", END)
 graph_builder.add_edge("tools", "chatbot")
 
 # Compie graph
