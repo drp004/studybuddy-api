@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, Form
+from fastapi.middleware.cors import CORSMiddleware
 import json
 from pydantic import BaseModel
 from typing import List, Optional
@@ -33,6 +34,14 @@ from graph_career import career_graph, career_system_prompt
 
 # FastAPI app
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # your system prompt
 system_prompt = """
