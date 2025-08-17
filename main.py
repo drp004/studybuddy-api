@@ -23,6 +23,7 @@ import numpy as np
 # youtube video process
 from urllib.parse import urlparse, parse_qs
 from youtube_transcript_api import YouTubeTranscriptApi
+import youtube_transcript_api
 
 # audio process
 from faster_whisper import WhisperModel
@@ -402,3 +403,7 @@ async def roadmap(req: ChatRequest):
         "reply": bot_reply,
         "history": response_history
     }
+
+@app.get("/debug")
+def debug():
+    return {"methods": dir(YouTubeTranscriptApi), "version": getattr(youtube_transcript_api, "__version__", "unknown")}

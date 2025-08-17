@@ -38,6 +38,7 @@ def transcribe_yt(url):
     # For shortened URLs (e.g., youtu.be/abcd1234)
     elif parsed_url.netloc == "youtu.be":
         video_id = parsed_url.path[1:]  # Remove leading '/'
+        print("Video id: ", video_id)
 
     # Get Transcript   
     if video_id: 
@@ -45,6 +46,8 @@ def transcribe_yt(url):
         text = ""
         for i in transcript:
             text += i['text']
+
+        print("Transcribe: ", text)
 
         return text
 
