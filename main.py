@@ -404,6 +404,39 @@ async def roadmap(req: ChatRequest):
         "history": response_history
     }
 
-@app.get("/debug")
-def debug():
-    return {"methods": dir(YouTubeTranscriptApi), "version": getattr(youtube_transcript_api, "__version__", "unknown")}
+# === Route for Text Process === #
+@app.post("/studybuddy/process-text")
+async def roadmap(req: ChatRequest):
+    """
+    Accepts a JSON string in `req` and generate notes for given text
+    """
+    # add system prompt to messages
+    messages = [SystemMessage(content=system_prompt)]
+
+    # add older history to messages
+    for msg in req.history:
+        if msg.role == "human":
+            messages.append(HumanMessage(content=msg.content))
+        elif msg.role == "ai":
+            messages.append(AIMessage(content=msg.content))
+
+    # add latest user req to message
+    messages.append(HumanMessage(content=req.message))
+
+    # Run LangGraph
+    state = {"messages": messages}
+    result = graph.invoke(state)
+
+    # Get bot reply
+    bot_reply = result["messages"][-1].content
+
+    # Convert full message history to dicts for response
+    response_history = [
+        {"role": msg.type, "content": msg.content}
+        for msg in result["messages"]
+    ]
+
+    return {
+        "reply": bot_reply,
+        "history": response_history
+    }
