@@ -10,12 +10,18 @@ from langgraph.prebuilt import ToolNode, tools_condition
 # youtube video process
 from urllib.parse import urlparse, parse_qs
 from youtube_transcript_api import YouTubeTranscriptApi
+import assemblyai as aai
+import yt_dlp
+import os
 
 # load environment variables
 load_dotenv()
 
 # get groq api key from .env
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+ASSEMBLYAI_API_KEY = os.getenv("ASSEMBLYAI_API_KEY")
+
+aai.settings.api_key = ASSEMBLYAI_API_KEY
 
 # === message model === #
 class State(TypedDict):
@@ -26,33 +32,49 @@ class State(TypedDict):
 def transcribe_yt(url):
     """ Use this tool only for getting youtube video transcribe """
 
-    # Parse the URL to extract its components
-    parsed_url = urlparse(url)
+    # # Parse the URL to extract its components
+    # parsed_url = urlparse(url)
 
-    # Check if the URL contains a query string (e.g., ?v=abcd1234)
-    video_id = ""
-    if parsed_url.query:
-        query_params = parse_qs(parsed_url.query)
-        video_id = query_params.get("v", [None])[0]
+    # # Check if the URL contains a query string (e.g., ?v=abcd1234)
+    # video_id = ""
+    # if parsed_url.query:
+    #     query_params = parse_qs(parsed_url.query)
+    #     video_id = query_params.get("v", [None])[0]
 
-    # For shortened URLs (e.g., youtu.be/abcd1234)
-    elif parsed_url.netloc == "youtu.be":
-        video_id = parsed_url.path[1:]  # Remove leading '/'
-        print("Video id: ", video_id)
+    # # For shortened URLs (e.g., youtu.be/abcd1234)
+    # elif parsed_url.netloc == "youtu.be":
+    #     video_id = parsed_url.path[1:]  # Remove leading '/'
+    #     print("Video id: ", video_id)
 
-    # Get Transcript   
-    if video_id: 
-        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])    
-        text = ""
-        for i in transcript:
-            text += i['text']
+    # # Get Transcript   
+    # if video_id: 
+    #     transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])    
+    #     text = ""
+    #     for i in transcript:
+    #         text += i['text']
 
-        print("Transcribe: ", text)
+    #     print("Transcribe: ", text)
 
-        return text
+    #     return text
 
-    else:
-        return "Not getting video id video "
+    # else:
+    #     return "Not getting video id video "
+    # Step 1: Download audio from YouTube
+    filename="audio.mp3"
+    ydl_opts = {
+        'format': 'bestaudio[ext=m4a]',  # downloads as .m4a (no conversion)
+        'outtmpl': filename
+    }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([url])
+
+    # Step 2: Transcribe with AssemblyAI
+    transcriber = aai.Transcriber()
+    transcript = transcriber.transcribe(filename)
+
+    os.remove("audio.mp3")
+
+    return transcript.text
     
 # === define tools === #
 tools = [transcribe_yt]

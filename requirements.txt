@@ -24,9 +24,11 @@ numpy
 
 # YouTube transcripts
 youtube-transcript-api==1.1.1
+yt_dlp
 
 # Audio (Whisper)
 faster-whisper
+assemblyai
 
 # environment variables (optional, but recommended)
 python-dotenv
