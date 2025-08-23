@@ -61,7 +61,7 @@ def transcribe_yt(url):
     #     return "Not getting video id video "
     # Step 1: Download audio from YouTube
     filename="audio.mp3"
-    cookie = "cookie.txt"
+    cookie = "cookies.txt"
 
     ydl_opts = {
         'format': 'bestaudio[ext=m4a]',  # downloads as .m4a (no conversion)
