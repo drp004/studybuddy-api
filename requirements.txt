@@ -3,6 +3,7 @@ langchain
 langsmith
 python-dotenv
 langchain_groq 
+langchain-cerebras
 langchain_tavily
 
 # FastAPI

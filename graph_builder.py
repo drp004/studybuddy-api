@@ -4,6 +4,7 @@ from typing import TypedDict, Annotated
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langchain_groq import ChatGroq
+from langchain_cerebras import ChatCerebras
 from langchain_core.messages import HumanMessage
 from langgraph.prebuilt import ToolNode, tools_condition
 
@@ -19,6 +20,7 @@ load_dotenv()
 
 # get groq api key from .env
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY")
 ASSEMBLYAI_API_KEY = os.getenv("ASSEMBLYAI_API_KEY")
 
 aai.settings.api_key = ASSEMBLYAI_API_KEY
@@ -59,6 +61,7 @@ def transcribe_yt(url):
 
     # else:
     #     return "Not getting video id video "
+    
     # Step 1: Download audio from YouTube
     filename="audio.mp3"
     cookie = "cookies.txt"
@@ -83,7 +86,7 @@ def transcribe_yt(url):
 tools = [transcribe_yt]
 
 # initialize llm instance for chatbot
-llm = ChatGroq(model="llama-3.3-70b-versatile")
+llm = ChatCerebras(model="gpt-oss-120b")
 
 # bind llm with tool
 llm_with_tool = llm.bind_tools(tools)

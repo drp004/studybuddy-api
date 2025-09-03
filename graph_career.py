@@ -1,6 +1,7 @@
 from langgraph.graph import StateGraph, START
 from langgraph.graph.message import add_messages
 from langchain_groq import ChatGroq
+from langchain_cerebras import ChatCerebras
 from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_tavily import TavilySearch
@@ -29,7 +30,7 @@ def search(query):
 tools = [search]
 
 # === Initialize llm instance for infrance === #
-llm = ChatGroq(model="llama-3.3-70b-versatile")
+llm = ChatCerebras(model="gpt-oss-120b")
 
 # === tool binding with llm === #
 llm_with_tool = llm.bind_tools(tools)

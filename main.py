@@ -1,3 +1,6 @@
+import os
+from dotenv import load_dotenv
+
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 import json
@@ -26,12 +29,17 @@ from youtube_transcript_api import YouTubeTranscriptApi
 import youtube_transcript_api
 
 # audio process
+import assemblyai as aai
 from faster_whisper import WhisperModel
 import tempfile
 
 # import graph from graph_builder
 from graph_builder import graph
 from graph_career import career_graph, career_system_prompt 
+
+load_dotenv()
+
+ASSEMBLYAI_API_KEY1 = os.getenv("ASSEMBLYAI_API_KEY1")
 
 # FastAPI app
 app = FastAPI()
@@ -144,15 +152,12 @@ async def transcribe_yt(url):
 # === Audio processing === #
 
 # load the model once
-model = WhisperModel("tiny", device="cpu", compute_type="int8")
+aai.settings.api_key = ASSEMBLYAI_API_KEY1
 async def transcribe_audio_file(audio_path: str) -> str:
-    segments, info = model.transcribe(audio_path)
+    transcriber = aai.Transcriber()
+    transcript = transcriber.transcribe(audio_path)
 
-    transcript = ""
-    for seg in segments:
-        transcript += seg.text.strip() + " "
-        
-    return transcript.strip()
+    return transcript.text
 
 
 # === Routes === #
