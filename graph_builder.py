@@ -66,8 +66,7 @@ def transcribe_yt(url):
     ydl_opts = {
         "format": "bestaudio[ext=m4a]",  # downloads as .m4a (no conversion)
         "outtmpl": filename,
-        "http_headers": {"User-Agent": "Mozilla/5.0"},
-        "cookiefile": "cookies.txt"
+        "cookiefile": cookie
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
