@@ -1,87 +1,46 @@
-# studybuddy-api
+# FastAPI Integration for NoteMate
 
-Base URL: https://studybuddy-api-t716.onrender.com
+This document describes the integration of FastAPI endpoints with the NoteMate application for AI-powered content processing.
 
-1. Image Process:
-      Url : /studybuddy/process-image
-      Request data: form-data
-    
-      Form field: req -> object
-                  req = { 
-                    			“message”: string ( user prompt ),
-                    			“history”: [] ( Initaly Empty array\list )
-                    		}
-      		        image: file = Image ( image  uploaded by user )
-      Response: {
-            		   “reply”: “LLM generate output”,
-            		   “history”: [] 
-                }
-      ** In response history is list of objects where each object contain role & its content, this response formate will be same for every route.
-      e.g., [
-      		    {
-        		    “role”: “human”,
-        		    “content”: “Explain what is the AI?”
-              },
-              {
-        		    “role”: “ai”,
-        		    “content”: “LLM response”
-              }
-              
-            ]
+## Overview
 
+The integration connects the NoteMate frontend and backend with external FastAPI services to provide:
+- Image processing and note generation
+- PDF processing and note generation  
+- Audio processing and note generation
+- YouTube video processing and note generation
+- Career roadmap generation
 
-2. PDF Process:
-      Url : /studybuddy/process-pdf
-      Request data: form-data
-      
-      Form field: req -> object
-                  req = { 
-                    			“message”: string ( user prompt ),
-                    			“history”: [] ( Initaly Empty array\list )
-      		              }
-                  pdf: file = PDF( pdf uploaded by user )
-      Response: {
-            		   “reply”: “LLM generate output”,
-            		   “history”: [] 
-                }
+## FastAPI Endpoints
 
-3. Audio Process:
-    Url : /studybuddy/process-audio
-    Request data: form-data
-    
-    Form field: req -> object
-                req = { 
-                  			“message”: string ( user prompt ),
-                  			“history”: [] ( Initaly Empty array\list )
-                       }
-    		        audio: file = Audio( audio uploaded by user )
-    Response: {
-          		   “reply”: “LLM generate output”,
-          		   “history”: [] 
-              }
+The following endpoints are integrated:
 
-4. Roadmap Guide:
-    Url : /studybuddy/roadmap
-    Request data: raw json object
-    JSON object: {
-                    “message”: “user input”,
-                    “history”: []
-                 }
-     
-    Response: {
-          		   “reply”: “LLM generate output”,
-          		   “history”: [] 
-              }
+### 1. Image Processing
+- **URL**: `https://studybuddy-api-t716.onrender.com/studybuddy/process-image`
+- **Method**: POST
+- **Input**: Form data with image file and request message
+- **Output**: Generated notes from image content
 
-5. YT-video Process: 
-    Url : /studybuddy/roadmap
-    Request data: raw json object
-    JSON object: {
-              			“message”: “user input which contains yt-link”,
-              			“history”: []
-                 }
-     
-    Response: {
-          		   “reply”: “LLM generate output”,
-          		   “history”: [] 
-              }
+### 2. PDF Processing
+- **URL**: `https://studybuddy-api-t716.onrender.com/studybuddy/process-pdf`
+- **Method**: POST
+- **Input**: Form data with PDF file and request message
+- **Output**: Generated notes from PDF content
+
+### 3. Audio Processing
+- **URL**: `https://studybuddy-api-t716.onrender.com/studybuddy/process-audio`
+- **Method**: POST
+- **Input**: Form data with audio file and request message
+- **Output**: Generated notes from audio content
+
+### 4. YouTube Processing
+- **URL**: `https://studybuddy-api-t716.onrender.com/studybuddy/process-yt`
+- **Method**: POST
+- **Input**: JSON with YouTube link and request message
+- **Output**: Generated notes from video content
+
+### 5. Career Roadmap
+- **URL**: `https://studybuddy-api-t716.onrender.com/studybuddy/roadmap`
+- **Method**: POST
+- **Input**: JSON with background description and interests
+- **Output**: Generated career roadmap
